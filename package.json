@@ -1,0 +1,24 @@
+{
+  "name": "node_restful_webserice",
+  "version": "1.0.0",
+  "description": "A RESTful NodeJS server",
+  "main": "lib/server.js",
+  "scripts": {
+    "start": "node lib/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Rob-Leggett/node_restful_webservice.git"
+  },
+  "author": "Robert Leggett",
+  "license": "MIT",
+  "homepage": "https://github.com/Rob-Leggett/node_restful_webservice",
+  "bugs": {
+    "url": "https://github.com/Rob-Leggett/node_restful_webservice/issues"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "mongodb": "^2.2.11"
+  }
+}
