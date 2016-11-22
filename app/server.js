@@ -3,7 +3,7 @@ const bodyParser = require("body-parser");
 const jwt = require('express-jwt');
 const morgan = require('morgan');
 
-const config = require("./config/config");
+const config = require("./configuration/config");
 
 const tokenController = require("./token/tokenController");
 const customerController = require("./customer/customerController");
