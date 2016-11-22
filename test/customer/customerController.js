@@ -1,7 +1,7 @@
 const assert = require('assert');
 const sinon = require('sinon');
 
-const customerController = require('../../lib/customer/CustomerController');
+const customerController = require('../../app/customer/customerController');
 
 describe('Customer Controller', () => {
   describe('get', () => {
