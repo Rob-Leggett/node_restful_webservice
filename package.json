@@ -4,6 +4,7 @@
   "description": "A RESTful NodeJS server",
   "main": "lib/server.js",
   "scripts": {
+    "test": "mocha \"test/**/*.js\"",
     "start": "node lib/server.js"
   },
   "repository": {
@@ -15,6 +16,10 @@
   "homepage": "https://github.com/Rob-Leggett/node_restful_webservice",
   "bugs": {
     "url": "https://github.com/Rob-Leggett/node_restful_webservice/issues"
+  },
+  "devDependencies": {
+    "mocha": "^3.1.2",
+    "sinon": "^1.17.6"
   },
   "dependencies": {
     "body-parser": "^1.15.2",
