@@ -16,9 +16,9 @@ Setup
 2. Start mongoDB with the following command "mongod -dbpath ./Projects/node_restful_webservice/db" 
 3. Open another console and run "mongo"
 4. Type "use node_restful_example"
-5. Type "db.user.save({name: "example", password: "password", role: "admin"})"
-6. Type "db.user.save({name: "tester", password: "password", role: "user"})"
-7. Type "db.user.find()" to confirm you see both entries in user
+5. Type "db.users.save({name: "example", password: "password", role: "admin"})"
+6. Type "db.users.save({name: "tester", password: "password", role: "user"})"
+7. Type "db.users.find()" to confirm you see both entries in users doc
 
 Testing
 =======
