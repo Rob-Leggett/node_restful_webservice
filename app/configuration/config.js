@@ -1,4 +1,4 @@
 module.exports = {
   'secret': 'examplesecret',
-  'database': 'mongodb://username:password;host:27017/something'
+  'database': 'mongodb://localhost:27017/node_restful_example'
 };
