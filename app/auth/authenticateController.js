@@ -6,18 +6,14 @@ const User = require('../user/db/model/user');
 
 function authenticate(req, res, next) {
 
-  User.findOne({}, (err, user) => {
+  User.findOne({ name: req.body.name }, (err, user) => {
 
-    if (err) {
-      res.status(500).json({error: 'Authentication failed.'});
-    }
-
-    if (!user || user.password != req.body.password) {
+    if (err || !user || user.password != req.body.password) {
       res.status(403).json({error: 'Authentication failed.'});
     } else {
-      const token = jwt.sign({ name: user.name, role: user.role }, config.secret);
-
-      // , { expiresInMinutes: 1440 } // expires in 24 hours
+      const token = jwt.sign({ name: user.name, role: user.role }, config.secret, {
+        expiresIn : 60*60*24
+      });
 
       res.status(200).json({token: token});
     }
