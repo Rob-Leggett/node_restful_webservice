@@ -7,10 +7,16 @@ const config = require("./configuration/config");
 const authRouter = require("./auth/authRouter");
 const customerRouter = require("./customer/customerRouter");
 const exceptionHandler = require("./exceptionHandler");
+const seed = require("../config/seed");
 
 // ######### Database Connection ###########
 
-mongoose.connect(config.database); // connect to database
+mongoose.connect(config.database).then(() => {
+
+  if (process.env.NODE_ENV === 'development') {
+    seed();
+  }
+}); // connect to database
 
 // ######### Express Application ###########
 

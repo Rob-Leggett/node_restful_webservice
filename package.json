@@ -4,8 +4,9 @@
   "description": "A RESTful NodeJS server",
   "main": "app/server.js",
   "scripts": {
+    "setup": "mongo node_restful_example --eval \"db.dropDatabase()\"",
     "test": "mocha \"test/**/*.js\"",
-    "start": "node app/server.js"
+    "start": "npm run setup && NODE_ENV=development node app/server.js"
   },
   "repository": {
     "type": "git",

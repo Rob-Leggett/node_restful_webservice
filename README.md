@@ -12,13 +12,8 @@ Setup
 
 ***Database***
 
-1. Create a directory "database" under your project "node_restful_webservice"
-2. Start mongoDB with the following command "mongod -dbpath ./Projects/node_restful_webservice/database" 
-3. Open another console and run "mongo"
-4. Type "use node_restful_example"
-5. Type "db.users.save({name: "example", password: "password", role: "admin"})"
-6. Type "db.users.save({name: "tester", password: "password", role: "user"})"
-7. Type "db.users.find()" to confirm you see both entries in users doc
+1. Install mongoDB and have the service running.
+2. Run "npm start" to seed the database.
 
 Testing
 =======
