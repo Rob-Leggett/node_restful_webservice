@@ -1,6 +1,7 @@
 function handle(err, req, res, next) {
-  if (err.name === 'UnauthorizedError') {
-    res.status(403).json({error: 'Invalid token supplied'});
+
+  if (err.name === 'TokenExpiredError' || err.name === 'JsonWebTokenError') {
+    res.status(403).json({error: 'Authentication Failed'});
   }
 }
 

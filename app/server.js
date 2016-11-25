@@ -34,7 +34,7 @@ app.use(exceptionHandler.handle);
 // ######### Server Listener ###########
 
 app.listen(3000, () => {
-  console.log('Example app listening on port 3000!')
+  console.log('Example app listening on port 3000!');
 });
 
 // https://scotch.io/tutorials/authenticate-a-node-js-api-with-json-web-tokens
