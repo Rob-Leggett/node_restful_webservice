@@ -25,7 +25,15 @@ function getCustomers(req, res) {
 }
 
 function saveCustomer(req, res) {
-  queryCustomer.saveOrUpdate(req.params.id, req.body).then(() => {
+  queryCustomer.save(req.body).then(() => {
+    let response = {};
+
+    res.status(200).json(response);
+  });
+}
+
+function updateCustomer(req, res) {
+  queryCustomer.update(req.params.id, req.body).then(() => {
     let response = {};
 
     res.status(200).json(response);
@@ -43,5 +51,6 @@ module.exports = {
   getCustomer,
   getCustomers,
   saveCustomer,
+  updateCustomer,
   deleteCustomer
 };

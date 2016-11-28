@@ -8,7 +8,11 @@ function get() {
   return Customer.find({});
 }
 
-function saveOrUpdate(id, body) {
+function save(body) {
+  return new Customer(body).save();
+}
+
+function update(id, body) {
   return Customer.update({_id: id}, {$set: body}, {upsert: true});
 }
 
@@ -20,6 +24,7 @@ function remove(id) {
 module.exports = {
   getById,
   get,
-  saveOrUpdate,
+  save,
+  update,
   remove
 };
