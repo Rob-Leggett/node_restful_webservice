@@ -1,7 +1,7 @@
-const Customer = require('../user/db/model/customer');
+const queryCustomer = require('../user/db/query/queryCustomer');
 
-function getById(req, res) {
-  Customer.findById({_id: req.params.id}, (err, customer) => {
+function getCustomer(req, res) {
+  queryCustomer.getById(req.params.id).then((customer) => {
     let response = {};
 
     if (customer) {
@@ -12,8 +12,8 @@ function getById(req, res) {
   });
 }
 
-function get(req, res) {
-  Customer.find({}, (err, customers) => {
+function getCustomers(req, res) {
+  queryCustomer.get().then((customers) => {
     let response = {};
 
     if (customers) {
@@ -24,24 +24,24 @@ function get(req, res) {
   });
 }
 
-function saveOrUpdate(req, res) {
-  Customer.update({_id: req.params.id}, {$set: req.body}, {upsert: true}, (err) => {
+function saveCustomer(req, res) {
+  queryCustomer.saveOrUpdate(req.params.id, req.body).then(() => {
     let response = {};
 
     res.status(200).json(response);
   });
 }
 
-function remove(req, res) {
-  Customer.remove({_id: req.params.id}, (err) => {
+function deleteCustomer(req, res) {
+  queryCustomer.remove(req.params.id).then(() => {
     res.status(200).json({});
   });
 }
 
 // set up endpoint functions and pass them via module.exports
 module.exports = {
-  getById,
-  get,
-  saveOrUpdate,
-  remove
+  getCustomer,
+  getCustomers,
+  saveCustomer,
+  deleteCustomer
 };
