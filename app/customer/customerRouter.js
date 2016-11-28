@@ -9,8 +9,8 @@ router.use(jwtVerifier);
 
 router.get("", customerController.get);
 router.get("/:id", customerController.getById);
-router.post("", customerController.save);
-router.put("/:id", customerController.update);
+router.post("", customerController.saveOrUpdate);
+router.put("/:id", customerController.saveOrUpdate);
 router.delete("/:id", customerController.remove);
 
 module.exports = router;

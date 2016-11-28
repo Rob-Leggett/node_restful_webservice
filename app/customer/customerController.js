@@ -1,31 +1,39 @@
 const Customer = require('../user/db/model/customer');
 
 function getById(req, res) {
-  Customer.findById({id: req.params.id}, (err, customers) => {
-    res.status(200).json(customers);
+  Customer.findById({_id: req.params.id}, (err, customer) => {
+    let response = {};
+
+    if (customer) {
+      response = customer;
+    }
+
+    res.status(200).json(response);
   });
 }
 
 function get(req, res) {
   Customer.find({}, (err, customers) => {
-    res.status(200).json(customers);
+    let response = {};
+
+    if (customers) {
+      response.customers = customers;
+    }
+
+    res.status(200).json(response);
   });
 }
 
-function save(req, res) {
-  Customer.insert(req.body, (err) => {
-    res.status(200).json({});
-  });
-}
+function saveOrUpdate(req, res) {
+  Customer.update({_id: req.params.id}, {$set: req.body}, {upsert: true}, (err) => {
+    let response = {};
 
-function update(req, res) {
-  Customer.update({_id: req.params.id}, {$set: req.body}, (err) => {
-    res.status(200).json({});
+    res.status(200).json(response);
   });
 }
 
 function remove(req, res) {
-  Customer.remove({_id: req.body.id}, (err) => {
+  Customer.remove({_id: req.params.id}, (err) => {
     res.status(200).json({});
   });
 }
@@ -34,7 +42,6 @@ function remove(req, res) {
 module.exports = {
   getById,
   get,
-  save,
-  update,
+  saveOrUpdate,
   remove
 };
