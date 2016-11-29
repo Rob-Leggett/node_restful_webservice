@@ -19,7 +19,9 @@
     "url": "https://github.com/Rob-Leggett/node_restful_webservice/issues"
   },
   "devDependencies": {
+    "chai": "^3.5.0",
     "mocha": "^3.1.2",
+    "proxyquire": "^1.7.10",
     "sinon": "^1.17.6"
   },
   "dependencies": {

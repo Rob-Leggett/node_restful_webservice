@@ -2,6 +2,7 @@ const queryCustomer = require('../user/db/query/queryCustomer');
 
 function getCustomer(req, res) {
   queryCustomer.getById(req.params.id).then((customer) => {
+
     let response = {};
 
     if (customer) {

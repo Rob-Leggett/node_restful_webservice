@@ -1,4 +1,5 @@
 # node_restful_webservice
+[![Build Status](https://travis-ci.org/Rob-Leggett/node_restful_webservice.svg?branch=master)](https://travis-ci.org/Rob-Leggett/node_restful_webservice)
 
 This does not require babel to perform transpiling as later version of node have ES6 support natively, however current version of node used here does not support import so require is being used.
 
