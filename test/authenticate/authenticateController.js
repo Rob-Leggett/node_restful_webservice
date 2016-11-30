@@ -49,7 +49,7 @@ describe('Authenticate Controller', () => {
       expect(queryUserStub.getByName.calledWith(req.body.name)).to.equal(true);
     });
 
-    it('should return 200 successful', () => {
+    it('should return 200 successful', (done) => {
       const req = {
         body: {
           name: "Test",
@@ -61,10 +61,10 @@ describe('Authenticate Controller', () => {
 
       queryUserPromise.then(() => {
         expect(resStub.status.calledWith(200)).to.equal(true);
-      });
+      }).then(done, done);
     });
 
-    it('should return customer successful', () => {
+    it('should return customer successful', (done) => {
       const req = {
         body: {
           name: "Test",
@@ -77,7 +77,7 @@ describe('Authenticate Controller', () => {
 
       queryUserPromise.then(() => {
         expect(resStub.json.calledWith(expected)).to.equal(true);
-      })
+      }).then(done, done);
     });
   });
 
@@ -118,7 +118,7 @@ describe('Authenticate Controller', () => {
       expect(queryUserStub.getByName.calledWith(req.body.name)).to.equal(true);
     });
 
-    it('should return 403 successful', () => {
+    it('should return 403 successful', (done) => {
       const req = {
         body: {
           name: "Test",
@@ -130,10 +130,10 @@ describe('Authenticate Controller', () => {
 
       queryUserPromise.then(() => {
         expect(resStub.status.calledWith(403)).to.equal(true);
-      });
+      }).then(done, done);
     });
 
-    it('should return customer successful', () => {
+    it('should return customer successful', (done) => {
       const req = {
         body: {
           name: "Test",
@@ -146,7 +146,7 @@ describe('Authenticate Controller', () => {
 
       queryUserPromise.then(() => {
         expect(resStub.json.calledWith(expected)).to.equal(true);
-      })
+      }).then(done, done);
     });
   });
 
@@ -185,7 +185,7 @@ describe('Authenticate Controller', () => {
       expect(queryUserStub.getByName.calledWith(req.body.name)).to.equal(true);
     });
 
-    it('should return 403 successful', () => {
+    it('should return 403 successful', (done) => {
       const req = {
         body: {
           name: "Test",
@@ -197,10 +197,10 @@ describe('Authenticate Controller', () => {
 
       queryUserPromise.then(() => {
         expect(resStub.status.calledWith(403)).to.equal(true);
-      });
+      }).then(done, done);
     });
 
-    it('should return customer successful', () => {
+    it('should return customer successful', (done) => {
       const req = {
         body: {
           name: "Test",
@@ -213,7 +213,7 @@ describe('Authenticate Controller', () => {
 
       queryUserPromise.then(() => {
         expect(resStub.json.calledWith(expected)).to.equal(true);
-      })
+      }).then(done, done);
     });
   });
 });

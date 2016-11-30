@@ -38,7 +38,7 @@ describe('Customer Controller', () => {
       expect(queryCustomerStub.getById.calledWith(req.params.id)).to.equal(true);
     });
 
-    it('should return 200 successful', () => {
+    it('should return 200 successful', (done) => {
       const req = {
         params: {
           id: 123456789
@@ -49,10 +49,10 @@ describe('Customer Controller', () => {
 
       queryCustomerPromise.then(() => {
         expect(resStub.status.calledWith(200)).to.equal(true);
-      });
+      }).then(done, done);
     });
 
-    it('should return customer successful', () => {
+    it('should return customer successful', (done) => {
       const req = {
         params: {
           id: 123456789
@@ -63,7 +63,7 @@ describe('Customer Controller', () => {
 
       queryCustomerPromise.then(() => {
         expect(resStub.json.calledWith(customerStub)).to.equal(true);
-      })
+      }).then(done, done);
     });
   });
 
@@ -97,17 +97,17 @@ describe('Customer Controller', () => {
       expect(queryCustomerStub.get.calledOnce).to.equal(true);
     });
 
-    it('should return 200 successful', () => {
+    it('should return 200 successful', (done) => {
       const req = {};
 
       customerController.getCustomers(req, resStub);
 
       queryCustomerPromise.then(() => {
         expect(resStub.status.calledWith(200)).to.equal(true);
-      });
+      }).then(done, done);
     });
 
-    it('should return customers successful', () => {
+    it('should return customers successful', (done) => {
       const req = {};
       const expected = { customers: customersStub };
 
@@ -115,7 +115,7 @@ describe('Customer Controller', () => {
 
       queryCustomerPromise.then(() => {
         expect(resStub.json.calledWith(expected)).to.equal(true);
-      })
+      }).then(done, done);
     });
   });
 
@@ -152,7 +152,7 @@ describe('Customer Controller', () => {
       expect(queryCustomerStub.save.calledWith(req.body)).to.equal(true);
     });
 
-    it('should return 200 successful', () => {
+    it('should return 200 successful', (done) => {
       const req = {
         body: {
           firstName: "Test",
@@ -164,10 +164,10 @@ describe('Customer Controller', () => {
 
       queryCustomerPromise.then(() => {
         expect(resStub.status.calledWith(200)).to.equal(true);
-      });
+      }).then(done, done);
     });
 
-    it('should save customer successful', () => {
+    it('should save customer successful', (done) => {
       const req = {
         params: {
           id: 123456789
@@ -183,7 +183,7 @@ describe('Customer Controller', () => {
 
       queryCustomerPromise.then(() => {
         expect(resStub.json.calledWith(expected)).to.equal(true);
-      })
+      }).then(done, done);
     });
   });
 
@@ -223,7 +223,7 @@ describe('Customer Controller', () => {
       expect(queryCustomerStub.update.calledWith(req.params.id, req.body)).to.equal(true);
     });
 
-    it('should return 200 successful', () => {
+    it('should return 200 successful', (done) => {
       const req = {
         params: {
           id: 123456789
@@ -238,10 +238,10 @@ describe('Customer Controller', () => {
 
       queryCustomerPromise.then(() => {
         expect(resStub.status.calledWith(200)).to.equal(true);
-      });
+      }).then(done, done);
     });
 
-    it('should update customer successful', () => {
+    it('should update customer successful', (done) => {
       const req = {
         params: {
           id: 123456789
@@ -257,7 +257,7 @@ describe('Customer Controller', () => {
 
       queryCustomerPromise.then(() => {
         expect(resStub.json.calledWith(expected)).to.equal(true);
-      })
+      }).then(done, done);
     });
   });
 
@@ -293,7 +293,7 @@ describe('Customer Controller', () => {
       expect(queryCustomerStub.remove.calledWith(req.params.id)).to.equal(true);
     });
 
-    it('should return 200 successful', () => {
+    it('should return 200 successful', (done) => {
       const req = {
         params: {
           id: 123456789
@@ -304,10 +304,10 @@ describe('Customer Controller', () => {
 
       queryCustomerPromise.then(() => {
         expect(resStub.status.calledWith(200)).to.equal(true);
-      });
+      }).then(done, done);
     });
 
-    it('should delete customer successful', () => {
+    it('should delete customer successful', (done) => {
       const req = {
         params: {
           id: 123456789
@@ -319,7 +319,7 @@ describe('Customer Controller', () => {
 
       queryCustomerPromise.then(() => {
         expect(resStub.json.calledWith(expected)).to.equal(true);
-      })
+      }).then(done, done);
     });
   });
 });
