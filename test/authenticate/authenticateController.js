@@ -64,7 +64,7 @@ describe('Authenticate Controller', () => {
       }).then(done, done);
     });
 
-    it('should return customer successful', (done) => {
+    it('should return token successful', (done) => {
       const req = {
         body: {
           name: "Test",
@@ -133,7 +133,7 @@ describe('Authenticate Controller', () => {
       }).then(done, done);
     });
 
-    it('should return customer successful', (done) => {
+    it('should return error successful', (done) => {
       const req = {
         body: {
           name: "Test",
@@ -200,7 +200,7 @@ describe('Authenticate Controller', () => {
       }).then(done, done);
     });
 
-    it('should return customer successful', (done) => {
+    it('should return error successful', (done) => {
       const req = {
         body: {
           name: "Test",
