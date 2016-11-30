@@ -1,6 +1,6 @@
 const express = require("express");
 
-const jwtVerifier = require("../auth/jwtVerifier");
+const jwtVerifier = require("../authenticate/jwtVerifier");
 
 const customerController = require("./customerController");
 

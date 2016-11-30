@@ -4,7 +4,7 @@ const config = require("../configuration/config");
 
 const User = require('../user/db/model/user');
 
-function authenticate(req, res, next) {
+function authenticate(req, res) {
 
   User.findOne({ name: req.body.name }, (err, user) => {
 

@@ -6,13 +6,12 @@ describe('Customer Controller', () => {
 
   describe('getCustomer', () => {
     let queryCustomerPromise, customerController;
-    let resStub;
+    let resStub = {};
     const queryCustomerStub = {};
 
     const customerStub = { firstName: "Test", lastName: "User" };
 
     beforeEach(() => {
-      resStub = {};
       resStub.status = sinon.stub().returns(resStub);
       resStub.json = sinon.stub().returns(resStub);
 
@@ -46,7 +45,6 @@ describe('Customer Controller', () => {
         }
       };
 
-
       customerController.getCustomer(req, resStub);
 
       queryCustomerPromise.then(() => {
@@ -65,6 +63,262 @@ describe('Customer Controller', () => {
 
       queryCustomerPromise.then(() => {
         expect(resStub.json.calledWith(customerStub)).to.equal(true);
+      })
+    });
+  });
+
+  describe('getCustomers', () => {
+    let queryCustomerPromise, customerController;
+    let resStub = {};
+    const queryCustomerStub = {};
+
+    const customersStub = [{ firstName: "Test", lastName: "User" }, { firstName: "User", lastName: "Test" }];
+
+    beforeEach(() => {
+      resStub.status = sinon.stub().returns(resStub);
+      resStub.json = sinon.stub().returns(resStub);
+
+      queryCustomerPromise = new Promise((resolve) => {
+        resolve(customersStub);
+      });
+
+      queryCustomerStub.get = sinon.stub().returns(queryCustomerPromise);
+
+      customerController = proxyquire('../../app/customer/customerController', {
+        '../user/db/query/queryCustomer': queryCustomerStub
+      });
+    });
+
+    it('should call query customers successful', () => {
+      const req = {};
+
+      customerController.getCustomers(req, resStub);
+
+      expect(queryCustomerStub.get.calledOnce).to.equal(true);
+    });
+
+    it('should return 200 successful', () => {
+      const req = {};
+
+      customerController.getCustomers(req, resStub);
+
+      queryCustomerPromise.then(() => {
+        expect(resStub.status.calledWith(200)).to.equal(true);
+      });
+    });
+
+    it('should return customers successful', () => {
+      const req = {};
+      const expected = { customers: customersStub };
+
+      customerController.getCustomers(req, resStub);
+
+      queryCustomerPromise.then(() => {
+        expect(resStub.json.calledWith(expected)).to.equal(true);
+      })
+    });
+  });
+
+  describe('saveCustomer', () => {
+    let queryCustomerPromise, customerController;
+    let resStub = {};
+    const queryCustomerStub = {};
+
+    beforeEach(() => {
+      resStub.status = sinon.stub().returns(resStub);
+      resStub.json = sinon.stub().returns(resStub);
+
+      queryCustomerPromise = new Promise((resolve) => {
+        resolve();
+      });
+
+      queryCustomerStub.save = sinon.stub().returns(queryCustomerPromise);
+
+      customerController = proxyquire('../../app/customer/customerController', {
+        '../user/db/query/queryCustomer': queryCustomerStub
+      });
+    });
+
+    it('should call query customer successful', () => {
+      const req = {
+        body: {
+          firstName: "Test",
+          lastName: "User"
+        }
+      };
+
+      customerController.saveCustomer(req, resStub);
+
+      expect(queryCustomerStub.save.calledWith(req.body)).to.equal(true);
+    });
+
+    it('should return 200 successful', () => {
+      const req = {
+        body: {
+          firstName: "Test",
+          lastName: "User"
+        }
+      };
+
+      customerController.saveCustomer(req, resStub);
+
+      queryCustomerPromise.then(() => {
+        expect(resStub.status.calledWith(200)).to.equal(true);
+      });
+    });
+
+    it('should save customer successful', () => {
+      const req = {
+        params: {
+          id: 123456789
+        },
+        body: {
+          firstName: "Test",
+          lastName: "User"
+        }
+      };
+      const expected = {};
+
+      customerController.saveCustomer(req, resStub);
+
+      queryCustomerPromise.then(() => {
+        expect(resStub.json.calledWith(expected)).to.equal(true);
+      })
+    });
+  });
+
+  describe('updateCustomer', () => {
+    let queryCustomerPromise, customerController;
+    let resStub = {};
+    const queryCustomerStub = {};
+
+    beforeEach(() => {
+      resStub.status = sinon.stub().returns(resStub);
+      resStub.json = sinon.stub().returns(resStub);
+
+      queryCustomerPromise = new Promise((resolve) => {
+        resolve();
+      });
+
+      queryCustomerStub.update = sinon.stub().returns(queryCustomerPromise);
+
+      customerController = proxyquire('../../app/customer/customerController', {
+        '../user/db/query/queryCustomer': queryCustomerStub
+      });
+    });
+
+    it('should call query customer successful', () => {
+      const req = {
+        params: {
+          id: 123456789
+        },
+        body: {
+          firstName: "Test",
+          lastName: "User"
+        }
+      };
+
+      customerController.updateCustomer(req, resStub);
+
+      expect(queryCustomerStub.update.calledWith(req.params.id, req.body)).to.equal(true);
+    });
+
+    it('should return 200 successful', () => {
+      const req = {
+        params: {
+          id: 123456789
+        },
+        body: {
+          firstName: "Test",
+          lastName: "User"
+        }
+      };
+
+      customerController.updateCustomer(req, resStub);
+
+      queryCustomerPromise.then(() => {
+        expect(resStub.status.calledWith(200)).to.equal(true);
+      });
+    });
+
+    it('should update customer successful', () => {
+      const req = {
+        params: {
+          id: 123456789
+        },
+        body: {
+          firstName: "Test",
+          lastName: "User"
+        }
+      };
+      const expected = {};
+
+      customerController.updateCustomer(req, resStub);
+
+      queryCustomerPromise.then(() => {
+        expect(resStub.json.calledWith(expected)).to.equal(true);
+      })
+    });
+  });
+
+  describe('deleteCustomer', () => {
+    let queryCustomerPromise, customerController;
+    let resStub = {};
+    const queryCustomerStub = {};
+
+    beforeEach(() => {
+      resStub.status = sinon.stub().returns(resStub);
+      resStub.json = sinon.stub().returns(resStub);
+
+      queryCustomerPromise = new Promise((resolve) => {
+        resolve();
+      });
+
+      queryCustomerStub.remove = sinon.stub().returns(queryCustomerPromise);
+
+      customerController = proxyquire('../../app/customer/customerController', {
+        '../user/db/query/queryCustomer': queryCustomerStub
+      });
+    });
+
+    it('should call query customer successful', () => {
+      const req = {
+        params: {
+          id: 123456789
+        }
+      };
+
+      customerController.deleteCustomer(req, resStub);
+
+      expect(queryCustomerStub.remove.calledWith(req.params.id)).to.equal(true);
+    });
+
+    it('should return 200 successful', () => {
+      const req = {
+        params: {
+          id: 123456789
+        }
+      };
+
+      customerController.deleteCustomer(req, resStub);
+
+      queryCustomerPromise.then(() => {
+        expect(resStub.status.calledWith(200)).to.equal(true);
+      });
+    });
+
+    it('should delete customer successful', () => {
+      const req = {
+        params: {
+          id: 123456789
+        }
+      };
+      const expected = {};
+
+      customerController.deleteCustomer(req, resStub);
+
+      queryCustomerPromise.then(() => {
+        expect(resStub.json.calledWith(expected)).to.equal(true);
       })
     });
   });

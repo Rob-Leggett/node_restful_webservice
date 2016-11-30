@@ -4,7 +4,7 @@ const morgan = require('morgan');
 const mongoose = require('mongoose');
 
 const config = require("./configuration/config");
-const authRouter = require("./auth/authRouter");
+const authenticateRouter = require("./authenticate/authenticateRouter");
 const customerRouter = require("./customer/customerRouter");
 const exceptionHandler = require("./exceptionHandler");
 const seed = require("../config/seed");
@@ -27,7 +27,7 @@ app.use(morgan('dev')); // logging requests
 
 // ######### Token Routes ###########
 
-app.use("/authenticate", authRouter);
+app.use("/authenticate", authenticateRouter);
 
 // ######### Customer Routes ###########
 
@@ -42,6 +42,3 @@ app.use(exceptionHandler.handle);
 app.listen(3000, () => {
   console.log('Example app listening on port 3000!');
 });
-
-// https://scotch.io/tutorials/authenticate-a-node-js-api-with-json-web-tokens
-// https://scotch.io/tutorials/using-mongoosejs-in-node-js-and-mongodb-applications
