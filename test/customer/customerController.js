@@ -4,7 +4,7 @@ const sinon = require('sinon');
 
 describe('Customer Controller', () => {
 
-  describe('getCustomer', () => {
+  describe('getCustomer successfully', () => {
     let queryCustomerPromise, customerController;
     let resStub = {};
     const queryCustomerStub = {};
@@ -67,7 +67,7 @@ describe('Customer Controller', () => {
     });
   });
 
-  describe('getCustomers', () => {
+  describe('getCustomers successfully', () => {
     let queryCustomerPromise, customerController;
     let resStub = {};
     const queryCustomerStub = {};
@@ -119,7 +119,7 @@ describe('Customer Controller', () => {
     });
   });
 
-  describe('saveCustomer', () => {
+  describe('saveCustomer successfully', () => {
     let queryCustomerPromise, customerController;
     let resStub = {};
     const queryCustomerStub = {};
@@ -187,7 +187,7 @@ describe('Customer Controller', () => {
     });
   });
 
-  describe('updateCustomer', () => {
+  describe('updateCustomer successfully', () => {
     let queryCustomerPromise, customerController;
     let resStub = {};
     const queryCustomerStub = {};
@@ -261,7 +261,7 @@ describe('Customer Controller', () => {
     });
   });
 
-  describe('deleteCustomer', () => {
+  describe('deleteCustomer successfully', () => {
     let queryCustomerPromise, customerController;
     let resStub = {};
     const queryCustomerStub = {};

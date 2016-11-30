@@ -2,11 +2,11 @@ const jwt = require('jsonwebtoken');
 
 const config = require("../configuration/config");
 
-const User = require('../user/db/model/user');
+const queryUser = require('../user/db/query/queryUser');
 
 function authenticate(req, res) {
 
-  User.findOne({ name: req.body.name }, (err, user) => {
+  queryUser.getByName(req.body.name).then((user, err) => {
 
     if (err || !user || user.password != req.body.password) {
       res.status(403).json({error: 'Authentication failed.'});
