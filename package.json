@@ -6,7 +6,9 @@
   "scripts": {
     "setup": "mongo node_restful_example --eval \"db.dropDatabase()\"",
     "test": "mocha \"test/**/*.js\"",
-    "start": "npm run setup && NODE_ENV=development node app/server.js"
+    "start": "npm run setup && NODE_ENV=development node app/server.js",
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
   },
   "repository": {
     "type": "git",
@@ -29,6 +31,8 @@
     "express": "^4.14.0",
     "jsonwebtoken": "^7.1.9",
     "mongoose": "^4.6.8",
-    "morgan": "^1.7.0"
-  }
+    "morgan": "^1.7.0",
+    "snyk": "^1.316.1"
+  },
+  "snyk": true
 }
