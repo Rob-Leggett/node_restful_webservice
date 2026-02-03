@@ -1,44 +1,57 @@
-const express = require("express");
-const bodyParser = require("body-parser");
-const morgan = require('morgan');
-const mongoose = require('mongoose');
+import express from 'express';
+import morgan from 'morgan';
+import mongoose from 'mongoose';
 
-const config = require("./configuration/config");
-const authenticateRouter = require("./authenticate/authenticateRouter");
-const customerRouter = require("./customer/customerRouter");
-const exceptionHandler = require("./exceptionHandler");
-const seed = require("../config/seed");
+import config from './configuration/config.js';
+import authenticateRouter from './authenticate/authenticateRouter.js';
+import customerRouter from './customer/customerRouter.js';
+import * as exceptionHandler from './exceptionHandler.js';
+import seed from '../config/seed.js';
 
-// ######### Database Connection ###########
+const PORT = process.env.PORT || 3000;
 
-mongoose.connect(config.database).then(() => {
+// Database Connection
+const connectDB = async () => {
+  try {
+    await mongoose.connect(config.database);
+    console.log('Connected to MongoDB');
 
-  if (process.env.NODE_ENV === 'development') {
-    seed();
+    if (process.env.NODE_ENV === 'development') {
+      await seed();
+    }
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
+    process.exit(1);
   }
-}); // connect to database
+};
 
-// ######### Express Application ###########
-
+// Express Application
 const app = express();
-app.use(bodyParser.urlencoded({extended: false}));
-app.use(bodyParser.json());
-app.use(morgan('dev')); // logging requests
 
-// ######### Token Routes ###########
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(morgan('dev'));
 
-app.use("/authenticate", authenticateRouter);
+// Health check endpoint
+app.get('/health', (req, res) => {
+  res.status(200).json({ status: 'ok' });
+});
 
-// ######### Customer Routes ###########
+// Routes
+app.use('/authenticate', authenticateRouter);
+app.use('/customer', customerRouter);
 
-app.use("/customer", customerRouter);
-
-// ######### Exception Handling ###########
-
+// Exception Handling
 app.use(exceptionHandler.handle);
 
-// ######### Server Listener ###########
+// Start Server
+const startServer = async () => {
+  await connectDB();
+  app.listen(PORT, () => {
+    console.log(`Server listening on port ${PORT}`);
+  });
+};
 
-app.listen(3000, () => {
-  console.log('Example app listening on port 3000!');
-});
+startServer();
+
+export default app;

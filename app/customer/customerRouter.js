@@ -1,16 +1,15 @@
-const express = require("express");
+import { Router } from 'express';
+import jwtVerifier from '../authenticate/jwtVerifier.js';
+import * as customerController from './customerController.js';
 
-const jwtVerifier = require("../authenticate/jwtVerifier");
+const router = Router();
 
-const customerController = require("./customerController");
-
-const router = express.Router();
 router.use(jwtVerifier);
 
-router.get("", customerController.getCustomers);
-router.get("/:id", customerController.getCustomer);
-router.post("", customerController.saveCustomer);
-router.put("/:id", customerController.updateCustomer);
-router.delete("/:id", customerController.deleteCustomer);
+router.get('', customerController.getCustomers);
+router.get('/:id', customerController.getCustomer);
+router.post('', customerController.saveCustomer);
+router.put('/:id', customerController.updateCustomer);
+router.delete('/:id', customerController.deleteCustomer);
 
-module.exports = router;
+export default router;

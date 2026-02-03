@@ -1,30 +1,11 @@
-const Customer = require('../model/customer');
+import Customer from '../model/customer.js';
 
-function getById(id) {
-  return Customer.findById({_id: id});
-}
+export const getById = (id) => Customer.findById(id);
 
-function get() {
-  return Customer.find({});
-}
+export const get = () => Customer.find({});
 
-function save(body) {
-  return new Customer(body).save();
-}
+export const save = (body) => new Customer(body).save();
 
-function update(id, body) {
-  return Customer.update({_id: id}, {$set: body}, {upsert: true});
-}
+export const update = (id, body) => Customer.findByIdAndUpdate(id, { $set: body }, { upsert: true, new: true });
 
-function remove(id) {
-  return Customer.remove({_id: id});
-}
-
-// set up endpoint functions and pass them via module.exports
-module.exports = {
-  getById,
-  get,
-  save,
-  update,
-  remove
-};
+export const remove = (id) => Customer.findByIdAndDelete(id);

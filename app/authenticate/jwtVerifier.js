@@ -1,25 +1,27 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+import config from '../configuration/config.js';
 
-const config = require("../configuration/config");
+class TokenNotFoundError extends Error {
+  constructor() {
+    super('Token not found');
+    this.name = 'TokenNotFound';
+  }
+}
 
-const TOKEN_NOT_FOUND = new Error();
-TOKEN_NOT_FOUND.name = 'TokenNotFound';
+const jwtVerifier = (req, res, next) => {
+  const token = req.headers.token || req.headers.authorization?.replace('Bearer ', '');
 
-module.exports = function jwtVerifier(req, res, next) {
-
-  if(!req.headers.token) {
-    next(TOKEN_NOT_FOUND)
+  if (!token) {
+    return next(new TokenNotFoundError());
   }
 
-  jwt.verify(req.headers.token, config.secret, (err, decoded) => {
-
+  jwt.verify(token, config.secret, (err, decoded) => {
     if (err) {
       return next(err);
     }
-
     req.user = decoded;
-
     next();
   });
-
 };
+
+export default jwtVerifier;

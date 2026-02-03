@@ -1,10 +1,9 @@
-// get an instance of mongoose and mongoose.Schema
-const mongoose = require('mongoose');
-const Schema = mongoose.Schema;
+import mongoose from 'mongoose';
 
-// set up a mongoose model and pass it using module.exports
-module.exports = mongoose.model('User', new Schema({
-  name: String,
-  password: String,
-  role: String
-}));
+const userSchema = new mongoose.Schema({
+  name: { type: String, required: true, unique: true },
+  password: { type: String, required: true },
+  role: { type: String, required: true, enum: ['admin', 'user'] }
+});
+
+export default mongoose.model('User', userSchema);

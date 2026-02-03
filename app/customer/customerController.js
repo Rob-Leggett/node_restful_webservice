@@ -1,57 +1,46 @@
-const queryCustomer = require('../user/db/query/queryCustomer');
+import * as queryCustomer from '../user/db/query/queryCustomer.js';
 
-function getCustomer(req, res) {
-  queryCustomer.getById(req.params.id).then((customer) => {
+export const getCustomer = async (req, res) => {
+  try {
+    const customer = await queryCustomer.getById(req.params.id);
+    res.status(200).json(customer || {});
+  } catch {
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+};
 
-    let response = {};
+export const getCustomers = async (req, res) => {
+  try {
+    const customers = await queryCustomer.get();
+    res.status(200).json({ customers: customers || [] });
+  } catch {
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+};
 
-    if (customer) {
-      response = customer;
-    }
+export const saveCustomer = async (req, res) => {
+  try {
+    const customer = await queryCustomer.save(req.body);
+    res.status(201).json(customer);
+  } catch {
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+};
 
-    res.status(200).json(response);
-  });
-}
+export const updateCustomer = async (req, res) => {
+  try {
+    const customer = await queryCustomer.update(req.params.id, req.body);
+    res.status(200).json(customer || {});
+  } catch {
+    res.status(500).json({ error: 'Internal server error.' });
+  }
+};
 
-function getCustomers(req, res) {
-  queryCustomer.get().then((customers) => {
-    let response = {};
-
-    if (customers) {
-      response.customers = customers;
-    }
-
-    res.status(200).json(response);
-  });
-}
-
-function saveCustomer(req, res) {
-  queryCustomer.save(req.body).then(() => {
-    let response = {};
-
-    res.status(200).json(response);
-  });
-}
-
-function updateCustomer(req, res) {
-  queryCustomer.update(req.params.id, req.body).then(() => {
-    let response = {};
-
-    res.status(200).json(response);
-  });
-}
-
-function deleteCustomer(req, res) {
-  queryCustomer.remove(req.params.id).then(() => {
-    res.status(200).json({});
-  });
-}
-
-// set up endpoint functions and pass them via module.exports
-module.exports = {
-  getCustomer,
-  getCustomers,
-  saveCustomer,
-  updateCustomer,
-  deleteCustomer
+export const deleteCustomer = async (req, res) => {
+  try {
+    await queryCustomer.remove(req.params.id);
+    res.status(204).send();
+  } catch {
+    res.status(500).json({ error: 'Internal server error.' });
+  }
 };

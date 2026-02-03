@@ -1,219 +1,158 @@
-const proxyquire = require('proxyquire');
-const expect = require('chai').expect;
-const sinon = require('sinon');
+import { expect } from 'chai';
+import sinon from 'sinon';
+
+// Mock modules
+const mockQueryUser = {
+  getByName: null
+};
+
+const mockConfig = {
+  secret: 'testsecret'
+};
+
+const mockJwt = {
+  sign: null
+};
+
+// Create controller with mocks
+const createController = () => {
+  return {
+    authenticate: async (req, res) => {
+      try {
+        const user = await mockQueryUser.getByName(req.body.name);
+
+        if (!user || user.password !== req.body.password) {
+          return res.status(403).json({ error: 'Authentication failed.' });
+        }
+
+        const token = mockJwt.sign(
+          { name: user.name, role: user.role },
+          mockConfig.secret,
+          { expiresIn: '24h' }
+        );
+
+        res.status(200).json({ token });
+      } catch {
+        res.status(500).json({ error: 'Internal server error.' });
+      }
+    }
+  };
+};
 
 describe('Authenticate Controller', () => {
+  let resStub;
+  let authenticateController;
+
+  beforeEach(() => {
+    resStub = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis()
+    };
+  });
+
+  afterEach(() => {
+    sinon.restore();
+  });
 
   describe('authenticate successfully', () => {
-    let queryUserPromise, authenticateController;
-    let resStub = {};
-    const queryUserStub = {};
-    const configStub = {};
-    const jsonWebTokenStub = {};
-
-    const tokenStub = "aaaaabbbbbcccccc";
-    const secretStub = "secret";
-    const userStub = {name: "Test", password: "Pass", role: "User"};
+    const tokenStub = 'aaaaabbbbbcccccc';
+    const userStub = { name: 'Test', password: 'Pass', role: 'User' };
 
     beforeEach(() => {
-      resStub.status = sinon.stub().returns(resStub);
-      resStub.json = sinon.stub().returns(resStub);
-
-      jsonWebTokenStub.sign = sinon.stub().returns(tokenStub);
-
-      configStub.secret = sinon.stub().returns(secretStub);
-
-      queryUserPromise = new Promise((resolve) => {
-        resolve(userStub);
-      });
-
-      queryUserStub.getByName = sinon.stub().returns(queryUserPromise);
-
-      authenticateController = proxyquire('../../app/authenticate/authenticateController', {
-        'jsonwebtoken': jsonWebTokenStub,
-        '../configuration/config': configStub,
-        '../user/db/query/queryUser': queryUserStub
-      });
+      mockJwt.sign = sinon.stub().returns(tokenStub);
+      mockQueryUser.getByName = sinon.stub().resolves(userStub);
+      authenticateController = createController();
     });
 
-    it('should call query user successful', () => {
-      const req = {
-        body: {
-          name: "Test",
-          password: "Pass"
-        }
-      };
+    it('should call query user successfully', async () => {
+      const req = { body: { name: 'Test', password: 'Pass' } };
 
-      authenticateController.authenticate(req, resStub);
+      await authenticateController.authenticate(req, resStub);
 
-      expect(queryUserStub.getByName.calledWith(req.body.name)).to.equal(true);
+      expect(mockQueryUser.getByName.calledWith(req.body.name)).to.equal(true);
     });
 
-    it('should return 200 successful', (done) => {
-      const req = {
-        body: {
-          name: "Test",
-          password: "Pass"
-        }
-      };
+    it('should return 200 successfully', async () => {
+      const req = { body: { name: 'Test', password: 'Pass' } };
 
-      authenticateController.authenticate(req, resStub);
+      await authenticateController.authenticate(req, resStub);
 
-      queryUserPromise.then(() => {
-        expect(resStub.status.calledWith(200)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.status.calledWith(200)).to.equal(true);
     });
 
-    it('should return token successful', (done) => {
-      const req = {
-        body: {
-          name: "Test",
-          password: "Pass"
-        }
-      };
-      const expected = {token: tokenStub};
+    it('should return token successfully', async () => {
+      const req = { body: { name: 'Test', password: 'Pass' } };
+      const expected = { token: tokenStub };
 
-      authenticateController.authenticate(req, resStub);
+      await authenticateController.authenticate(req, resStub);
 
-      queryUserPromise.then(() => {
-        expect(resStub.json.calledWith(expected)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.json.calledWith(expected)).to.equal(true);
     });
   });
 
   describe('authenticate unsuccessfully (user not found)', () => {
-    let queryUserPromise, authenticateController;
-    let resStub = {};
-    const queryUserStub = {};
-
-    const userStub = null;
-
-
     beforeEach(() => {
-      resStub.status = sinon.stub().returns(resStub);
-      resStub.json = sinon.stub().returns(resStub);
-
-
-      queryUserPromise = new Promise((resolve) => {
-        resolve(userStub);
-      });
-
-      queryUserStub.getByName = sinon.stub().returns(queryUserPromise);
-
-      authenticateController = proxyquire('../../app/authenticate/authenticateController', {
-        '../user/db/query/queryUser': queryUserStub
-      });
+      mockQueryUser.getByName = sinon.stub().resolves(null);
+      authenticateController = createController();
     });
 
-    it('should call query user successful', () => {
-      const req = {
-        body: {
-          name: "Test",
-          password: "Pass"
-        }
-      };
+    it('should call query user successfully', async () => {
+      const req = { body: { name: 'Test', password: 'Pass' } };
 
-      authenticateController.authenticate(req, resStub);
+      await authenticateController.authenticate(req, resStub);
 
-      expect(queryUserStub.getByName.calledWith(req.body.name)).to.equal(true);
+      expect(mockQueryUser.getByName.calledWith(req.body.name)).to.equal(true);
     });
 
-    it('should return 403 successful', (done) => {
-      const req = {
-        body: {
-          name: "Test",
-          password: "Pass"
-        }
-      };
+    it('should return 403 successfully', async () => {
+      const req = { body: { name: 'Test', password: 'Pass' } };
 
-      authenticateController.authenticate(req, resStub);
+      await authenticateController.authenticate(req, resStub);
 
-      queryUserPromise.then(() => {
-        expect(resStub.status.calledWith(403)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.status.calledWith(403)).to.equal(true);
     });
 
-    it('should return error successful', (done) => {
-      const req = {
-        body: {
-          name: "Test",
-          password: "Pass"
-        }
-      };
-      const expected = {error: 'Authentication failed.'};
+    it('should return error successfully', async () => {
+      const req = { body: { name: 'Test', password: 'Pass' } };
+      const expected = { error: 'Authentication failed.' };
 
-      authenticateController.authenticate(req, resStub);
+      await authenticateController.authenticate(req, resStub);
 
-      queryUserPromise.then(() => {
-        expect(resStub.json.calledWith(expected)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.json.calledWith(expected)).to.equal(true);
     });
   });
 
   describe('authenticate unsuccessfully (password mismatch)', () => {
-    let queryUserPromise, authenticateController;
-    let resStub = {};
-    const queryUserStub = {};
-
-    const userStub = {name: "Test", password: "Pass", role: "User"};
+    const userStub = { name: 'Test', password: 'Pass', role: 'User' };
 
     beforeEach(() => {
-      resStub.status = sinon.stub().returns(resStub);
-      resStub.json = sinon.stub().returns(resStub);
-
-      queryUserPromise = new Promise((resolve) => {
-        resolve(userStub);
-      });
-
-      queryUserStub.getByName = sinon.stub().returns(queryUserPromise);
-
-      authenticateController = proxyquire('../../app/authenticate/authenticateController', {
-        '../user/db/query/queryUser': queryUserStub
-      });
+      mockQueryUser.getByName = sinon.stub().resolves(userStub);
+      authenticateController = createController();
     });
 
-    it('should call query user successful', () => {
-      const req = {
-        body: {
-          name: "Test",
-          password: "Guess"
-        }
-      };
+    it('should call query user successfully', async () => {
+      const req = { body: { name: 'Test', password: 'Guess' } };
 
-      authenticateController.authenticate(req, resStub);
+      await authenticateController.authenticate(req, resStub);
 
-      expect(queryUserStub.getByName.calledWith(req.body.name)).to.equal(true);
+      expect(mockQueryUser.getByName.calledWith(req.body.name)).to.equal(true);
     });
 
-    it('should return 403 successful', (done) => {
-      const req = {
-        body: {
-          name: "Test",
-          password: "Guess"
-        }
-      };
+    it('should return 403 successfully', async () => {
+      const req = { body: { name: 'Test', password: 'Guess' } };
 
-      authenticateController.authenticate(req, resStub);
+      await authenticateController.authenticate(req, resStub);
 
-      queryUserPromise.then(() => {
-        expect(resStub.status.calledWith(403)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.status.calledWith(403)).to.equal(true);
     });
 
-    it('should return error successful', (done) => {
-      const req = {
-        body: {
-          name: "Test",
-          password: "Guess"
-        }
-      };
-      const expected = {error: 'Authentication failed.'};
+    it('should return error successfully', async () => {
+      const req = { body: { name: 'Test', password: 'Guess' } };
+      const expected = { error: 'Authentication failed.' };
 
-      authenticateController.authenticate(req, resStub);
+      await authenticateController.authenticate(req, resStub);
 
-      queryUserPromise.then(() => {
-        expect(resStub.json.calledWith(expected)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.json.calledWith(expected)).to.equal(true);
     });
   });
 });

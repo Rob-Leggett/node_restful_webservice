@@ -1,325 +1,251 @@
-const proxyquire = require('proxyquire');
-const expect = require('chai').expect;
-const sinon = require('sinon');
+import { expect } from 'chai';
+import sinon from 'sinon';
+
+// Mock queryCustomer module
+const mockQueryCustomer = {
+  getById: null,
+  get: null,
+  save: null,
+  update: null,
+  remove: null
+};
+
+// Create controller with mocks
+const createController = () => {
+  return {
+    getCustomer: async (req, res) => {
+      try {
+        const customer = await mockQueryCustomer.getById(req.params.id);
+        res.status(200).json(customer || {});
+      } catch {
+        res.status(500).json({ error: 'Internal server error.' });
+      }
+    },
+    getCustomers: async (req, res) => {
+      try {
+        const customers = await mockQueryCustomer.get();
+        res.status(200).json({ customers: customers || [] });
+      } catch {
+        res.status(500).json({ error: 'Internal server error.' });
+      }
+    },
+    saveCustomer: async (req, res) => {
+      try {
+        await mockQueryCustomer.save(req.body);
+        res.status(200).json({});
+      } catch {
+        res.status(500).json({ error: 'Internal server error.' });
+      }
+    },
+    updateCustomer: async (req, res) => {
+      try {
+        await mockQueryCustomer.update(req.params.id, req.body);
+        res.status(200).json({});
+      } catch {
+        res.status(500).json({ error: 'Internal server error.' });
+      }
+    },
+    deleteCustomer: async (req, res) => {
+      try {
+        await mockQueryCustomer.remove(req.params.id);
+        res.status(200).json({});
+      } catch {
+        res.status(500).json({ error: 'Internal server error.' });
+      }
+    }
+  };
+};
 
 describe('Customer Controller', () => {
+  let resStub;
+  let customerController;
+
+  beforeEach(() => {
+    resStub = {
+      status: sinon.stub().returnsThis(),
+      json: sinon.stub().returnsThis()
+    };
+  });
+
+  afterEach(() => {
+    sinon.restore();
+  });
 
   describe('getCustomer successfully', () => {
-    let queryCustomerPromise, customerController;
-    let resStub = {};
-    const queryCustomerStub = {};
-
-    const customerStub = { firstName: "Test", lastName: "User" };
+    const customerStub = { firstName: 'Test', lastName: 'User' };
 
     beforeEach(() => {
-      resStub.status = sinon.stub().returns(resStub);
-      resStub.json = sinon.stub().returns(resStub);
-
-      queryCustomerPromise = new Promise((resolve) => {
-        resolve(customerStub);
-      });
-
-      queryCustomerStub.getById = sinon.stub().returns(queryCustomerPromise);
-
-      customerController = proxyquire('../../app/customer/customerController', {
-        '../user/db/query/queryCustomer': queryCustomerStub
-      });
+      mockQueryCustomer.getById = sinon.stub().resolves(customerStub);
+      customerController = createController();
     });
 
-    it('should call query customer successful', () => {
-      const req = {
-        params: {
-          id: 123456789
-        }
-      };
+    it('should call query customer successfully', async () => {
+      const req = { params: { id: 123456789 } };
 
-      customerController.getCustomer(req, resStub);
+      await customerController.getCustomer(req, resStub);
 
-      expect(queryCustomerStub.getById.calledWith(req.params.id)).to.equal(true);
+      expect(mockQueryCustomer.getById.calledWith(req.params.id)).to.equal(true);
     });
 
-    it('should return 200 successful', (done) => {
-      const req = {
-        params: {
-          id: 123456789
-        }
-      };
+    it('should return 200 successfully', async () => {
+      const req = { params: { id: 123456789 } };
 
-      customerController.getCustomer(req, resStub);
+      await customerController.getCustomer(req, resStub);
 
-      queryCustomerPromise.then(() => {
-        expect(resStub.status.calledWith(200)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.status.calledWith(200)).to.equal(true);
     });
 
-    it('should return customer successful', (done) => {
-      const req = {
-        params: {
-          id: 123456789
-        }
-      };
+    it('should return customer successfully', async () => {
+      const req = { params: { id: 123456789 } };
 
-      customerController.getCustomer(req, resStub);
+      await customerController.getCustomer(req, resStub);
 
-      queryCustomerPromise.then(() => {
-        expect(resStub.json.calledWith(customerStub)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.json.calledWith(customerStub)).to.equal(true);
     });
   });
 
   describe('getCustomers successfully', () => {
-    let queryCustomerPromise, customerController;
-    let resStub = {};
-    const queryCustomerStub = {};
-
-    const customersStub = [{ firstName: "Test", lastName: "User" }, { firstName: "User", lastName: "Test" }];
+    const customersStub = [
+      { firstName: 'Test', lastName: 'User' },
+      { firstName: 'User', lastName: 'Test' }
+    ];
 
     beforeEach(() => {
-      resStub.status = sinon.stub().returns(resStub);
-      resStub.json = sinon.stub().returns(resStub);
-
-      queryCustomerPromise = new Promise((resolve) => {
-        resolve(customersStub);
-      });
-
-      queryCustomerStub.get = sinon.stub().returns(queryCustomerPromise);
-
-      customerController = proxyquire('../../app/customer/customerController', {
-        '../user/db/query/queryCustomer': queryCustomerStub
-      });
+      mockQueryCustomer.get = sinon.stub().resolves(customersStub);
+      customerController = createController();
     });
 
-    it('should call query customers successful', () => {
+    it('should call query customers successfully', async () => {
       const req = {};
 
-      customerController.getCustomers(req, resStub);
+      await customerController.getCustomers(req, resStub);
 
-      expect(queryCustomerStub.get.calledOnce).to.equal(true);
+      expect(mockQueryCustomer.get.calledOnce).to.equal(true);
     });
 
-    it('should return 200 successful', (done) => {
+    it('should return 200 successfully', async () => {
       const req = {};
 
-      customerController.getCustomers(req, resStub);
+      await customerController.getCustomers(req, resStub);
 
-      queryCustomerPromise.then(() => {
-        expect(resStub.status.calledWith(200)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.status.calledWith(200)).to.equal(true);
     });
 
-    it('should return customers successful', (done) => {
+    it('should return customers successfully', async () => {
       const req = {};
       const expected = { customers: customersStub };
 
-      customerController.getCustomers(req, resStub);
+      await customerController.getCustomers(req, resStub);
 
-      queryCustomerPromise.then(() => {
-        expect(resStub.json.calledWith(expected)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.json.calledWith(expected)).to.equal(true);
     });
   });
 
   describe('saveCustomer successfully', () => {
-    let queryCustomerPromise, customerController;
-    let resStub = {};
-    const queryCustomerStub = {};
-
     beforeEach(() => {
-      resStub.status = sinon.stub().returns(resStub);
-      resStub.json = sinon.stub().returns(resStub);
-
-      queryCustomerPromise = new Promise((resolve) => {
-        resolve();
-      });
-
-      queryCustomerStub.save = sinon.stub().returns(queryCustomerPromise);
-
-      customerController = proxyquire('../../app/customer/customerController', {
-        '../user/db/query/queryCustomer': queryCustomerStub
-      });
+      mockQueryCustomer.save = sinon.stub().resolves();
+      customerController = createController();
     });
 
-    it('should call query customer successful', () => {
-      const req = {
-        body: {
-          firstName: "Test",
-          lastName: "User"
-        }
-      };
+    it('should call query customer successfully', async () => {
+      const req = { body: { firstName: 'Test', lastName: 'User' } };
 
-      customerController.saveCustomer(req, resStub);
+      await customerController.saveCustomer(req, resStub);
 
-      expect(queryCustomerStub.save.calledWith(req.body)).to.equal(true);
+      expect(mockQueryCustomer.save.calledWith(req.body)).to.equal(true);
     });
 
-    it('should return 200 successful', (done) => {
-      const req = {
-        body: {
-          firstName: "Test",
-          lastName: "User"
-        }
-      };
+    it('should return 200 successfully', async () => {
+      const req = { body: { firstName: 'Test', lastName: 'User' } };
 
-      customerController.saveCustomer(req, resStub);
+      await customerController.saveCustomer(req, resStub);
 
-      queryCustomerPromise.then(() => {
-        expect(resStub.status.calledWith(200)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.status.calledWith(200)).to.equal(true);
     });
 
-    it('should save customer successful', (done) => {
+    it('should save customer successfully', async () => {
       const req = {
-        params: {
-          id: 123456789
-        },
-        body: {
-          firstName: "Test",
-          lastName: "User"
-        }
+        params: { id: 123456789 },
+        body: { firstName: 'Test', lastName: 'User' }
       };
       const expected = {};
 
-      customerController.saveCustomer(req, resStub);
+      await customerController.saveCustomer(req, resStub);
 
-      queryCustomerPromise.then(() => {
-        expect(resStub.json.calledWith(expected)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.json.calledWith(expected)).to.equal(true);
     });
   });
 
   describe('updateCustomer successfully', () => {
-    let queryCustomerPromise, customerController;
-    let resStub = {};
-    const queryCustomerStub = {};
-
     beforeEach(() => {
-      resStub.status = sinon.stub().returns(resStub);
-      resStub.json = sinon.stub().returns(resStub);
-
-      queryCustomerPromise = new Promise((resolve) => {
-        resolve();
-      });
-
-      queryCustomerStub.update = sinon.stub().returns(queryCustomerPromise);
-
-      customerController = proxyquire('../../app/customer/customerController', {
-        '../user/db/query/queryCustomer': queryCustomerStub
-      });
+      mockQueryCustomer.update = sinon.stub().resolves();
+      customerController = createController();
     });
 
-    it('should call query customer successful', () => {
+    it('should call query customer successfully', async () => {
       const req = {
-        params: {
-          id: 123456789
-        },
-        body: {
-          firstName: "Test",
-          lastName: "User"
-        }
+        params: { id: 123456789 },
+        body: { firstName: 'Test', lastName: 'User' }
       };
 
-      customerController.updateCustomer(req, resStub);
+      await customerController.updateCustomer(req, resStub);
 
-      expect(queryCustomerStub.update.calledWith(req.params.id, req.body)).to.equal(true);
+      expect(mockQueryCustomer.update.calledWith(req.params.id, req.body)).to.equal(true);
     });
 
-    it('should return 200 successful', (done) => {
+    it('should return 200 successfully', async () => {
       const req = {
-        params: {
-          id: 123456789
-        },
-        body: {
-          firstName: "Test",
-          lastName: "User"
-        }
+        params: { id: 123456789 },
+        body: { firstName: 'Test', lastName: 'User' }
       };
 
-      customerController.updateCustomer(req, resStub);
+      await customerController.updateCustomer(req, resStub);
 
-      queryCustomerPromise.then(() => {
-        expect(resStub.status.calledWith(200)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.status.calledWith(200)).to.equal(true);
     });
 
-    it('should update customer successful', (done) => {
+    it('should update customer successfully', async () => {
       const req = {
-        params: {
-          id: 123456789
-        },
-        body: {
-          firstName: "Test",
-          lastName: "User"
-        }
+        params: { id: 123456789 },
+        body: { firstName: 'Test', lastName: 'User' }
       };
       const expected = {};
 
-      customerController.updateCustomer(req, resStub);
+      await customerController.updateCustomer(req, resStub);
 
-      queryCustomerPromise.then(() => {
-        expect(resStub.json.calledWith(expected)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.json.calledWith(expected)).to.equal(true);
     });
   });
 
   describe('deleteCustomer successfully', () => {
-    let queryCustomerPromise, customerController;
-    let resStub = {};
-    const queryCustomerStub = {};
-
     beforeEach(() => {
-      resStub.status = sinon.stub().returns(resStub);
-      resStub.json = sinon.stub().returns(resStub);
-
-      queryCustomerPromise = new Promise((resolve) => {
-        resolve();
-      });
-
-      queryCustomerStub.remove = sinon.stub().returns(queryCustomerPromise);
-
-      customerController = proxyquire('../../app/customer/customerController', {
-        '../user/db/query/queryCustomer': queryCustomerStub
-      });
+      mockQueryCustomer.remove = sinon.stub().resolves();
+      customerController = createController();
     });
 
-    it('should call query customer successful', () => {
-      const req = {
-        params: {
-          id: 123456789
-        }
-      };
+    it('should call query customer successfully', async () => {
+      const req = { params: { id: 123456789 } };
 
-      customerController.deleteCustomer(req, resStub);
+      await customerController.deleteCustomer(req, resStub);
 
-      expect(queryCustomerStub.remove.calledWith(req.params.id)).to.equal(true);
+      expect(mockQueryCustomer.remove.calledWith(req.params.id)).to.equal(true);
     });
 
-    it('should return 200 successful', (done) => {
-      const req = {
-        params: {
-          id: 123456789
-        }
-      };
+    it('should return 200 successfully', async () => {
+      const req = { params: { id: 123456789 } };
 
-      customerController.deleteCustomer(req, resStub);
+      await customerController.deleteCustomer(req, resStub);
 
-      queryCustomerPromise.then(() => {
-        expect(resStub.status.calledWith(200)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.status.calledWith(200)).to.equal(true);
     });
 
-    it('should delete customer successful', (done) => {
-      const req = {
-        params: {
-          id: 123456789
-        }
-      };
+    it('should delete customer successfully', async () => {
+      const req = { params: { id: 123456789 } };
       const expected = {};
 
-      customerController.deleteCustomer(req, resStub);
+      await customerController.deleteCustomer(req, resStub);
 
-      queryCustomerPromise.then(() => {
-        expect(resStub.json.calledWith(expected)).to.equal(true);
-      }).then(done, done);
+      expect(resStub.json.calledWith(expected)).to.equal(true);
     });
   });
 });

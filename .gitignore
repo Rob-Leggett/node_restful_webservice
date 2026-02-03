@@ -1,3 +1,33 @@
-.idea
+# Dependencies
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
 .DS_Store
-database
+Thumbs.db
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Database
+database/
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Build
+dist/
+build/

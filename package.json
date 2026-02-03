@@ -1,12 +1,17 @@
 {
-  "name": "node_restful_webserice",
-  "version": "1.0.0",
-  "description": "A RESTful NodeJS server",
+  "name": "node_restful_webservice",
+  "version": "2.0.0",
+  "description": "A RESTful Node.js API with Express, MongoDB, and JWT authentication",
+  "type": "module",
   "main": "app/server.js",
+  "engines": {
+    "node": ">=20.0.0"
+  },
   "scripts": {
-    "setup": "mongo node_restful_example --eval \"db.dropDatabase()\"",
-    "test": "mocha \"test/**/*.js\"",
-    "start": "npm run setup && NODE_ENV=development node app/server.js"
+    "start": "node app/server.js",
+    "dev": "NODE_ENV=development node app/server.js",
+    "test": "NODE_OPTIONS='--experimental-vm-modules' mocha 'test/**/*.js'",
+    "lint": "eslint app test"
   },
   "repository": {
     "type": "git",
@@ -18,17 +23,26 @@
   "bugs": {
     "url": "https://github.com/Rob-Leggett/node_restful_webservice/issues"
   },
+  "keywords": [
+    "node",
+    "express",
+    "rest",
+    "api",
+    "mongodb",
+    "mongoose",
+    "jwt",
+    "authentication"
+  ],
   "devDependencies": {
-    "chai": "^3.5.0",
-    "mocha": "^3.1.2",
-    "proxyquire": "^1.7.10",
-    "sinon": "^1.17.6"
+    "chai": "^5.1.2",
+    "eslint": "^9.18.0",
+    "mocha": "^11.0.1",
+    "sinon": "^19.0.2"
   },
   "dependencies": {
-    "body-parser": "^1.15.2",
-    "express": "^4.14.0",
-    "jsonwebtoken": "^7.1.9",
-    "mongoose": "^5.12.3",
-    "morgan": "^1.7.0"
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.9.5",
+    "morgan": "^1.10.0"
   }
 }

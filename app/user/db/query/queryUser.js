@@ -1,10 +1,3 @@
-const User = require('../model/user');
+import User from '../model/user.js';
 
-function getByName(name) {
-  return User.findOne({ name: name });
-}
-
-// set up endpoint functions and pass them via module.exports
-module.exports = {
-  getByName
-};
+export const getByName = (name) => User.findOne({ name });
