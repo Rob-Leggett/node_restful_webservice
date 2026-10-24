@@ -1,9 +1,11 @@
 import { Router } from 'express';
 import jwtVerifier from '../authenticate/jwtVerifier.js';
+import { apiLimiter } from '../rateLimiter.js';
 import * as customerController from './customerController.js';
 
 const router = Router();
 
+router.use(apiLimiter);
 router.use(jwtVerifier);
 
 router.get('/', customerController.getCustomers);

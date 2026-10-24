@@ -38,6 +38,8 @@ The application uses environment variables for configuration:
 | `PORT` | `3000` | Server port |
 | `MONGODB_URI` | `mongodb://localhost:27017/node_restful_example` | MongoDB connection string |
 | `JWT_SECRET` | `examplesecret` | Secret key for JWT signing |
+| `RATE_LIMIT_MAX` | `300` | Requests per 15 min per IP for `/customer` routes |
+| `AUTH_RATE_LIMIT_MAX` | `20` | Requests per 15 min per IP for `/authenticate` |
 | `NODE_ENV` | - | Set to `development` to seed the database |
 
 ## Usage
