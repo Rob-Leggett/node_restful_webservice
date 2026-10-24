@@ -1,10 +1,6 @@
 # Node RESTful Web Service
 
-[![CI](https://github.com/Rob-Leggett/node_restful_webservice/actions/workflows/ci.yml/badge.svg)](https://github.com/Rob-Leggett/node_restful_webservice/actions/workflows/ci.yml)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D26-brightgreen)](https://nodejs.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Express](https://img.shields.io/badge/Express-5.x-blue)](https://expressjs.com/)
-[![MongoDB](https://img.shields.io/badge/MongoDB-8.x-green)](https://www.mongodb.com/)
+[![CI](https://github.com/Rob-Leggett/node_restful_webservice/actions/workflows/ci.yml/badge.svg?branch=master)](https://github.com/Rob-Leggett/node_restful_webservice/actions/workflows/ci.yml) [![License](https://img.shields.io/github/license/Rob-Leggett/node_restful_webservice)](LICENSE) [![Node.js 26](https://img.shields.io/badge/Node.js-26-5FA04E?logo=nodedotjs&logoColor=white)](https://nodejs.org/) [![Express 5.3](https://img.shields.io/badge/Express-5.3-000000?logo=express&logoColor=white)](https://expressjs.com/) [![Mongoose 9.11](https://img.shields.io/badge/Mongoose-9.11-47A248?logo=mongodb&logoColor=white)](https://mongoosejs.com/)
 
 A RESTful Node.js API built with Express, MongoDB, and JWT authentication.
 
