@@ -1,7 +1,7 @@
 # Node RESTful Web Service
 
 [![CI](https://github.com/Rob-Leggett/node_restful_webservice/actions/workflows/ci.yml/badge.svg)](https://github.com/Rob-Leggett/node_restful_webservice/actions/workflows/ci.yml)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D24.0.0-brightgreen)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D26-brightgreen)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 [![Express](https://img.shields.io/badge/Express-5.x-blue)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-8.x-green)](https://www.mongodb.com/)
@@ -19,7 +19,7 @@ A RESTful Node.js API built with Express, MongoDB, and JWT authentication.
 
 ## Requirements
 
-- Node.js >= 24 (LTS; see `.nvmrc`)
+- Node.js >= 26 (see `.nvmrc`)
 - MongoDB (local or remote)
 
 ## Installation
