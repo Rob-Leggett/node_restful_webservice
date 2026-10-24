@@ -1,18 +1,15 @@
 import js from '@eslint/js';
+import globals from 'globals';
 
 export default [
   js.configs.recommended,
   {
     languageOptions: {
-      ecmaVersion: 2024,
+      ecmaVersion: 'latest',
       sourceType: 'module',
       globals: {
-        console: 'readonly',
-        process: 'readonly',
-        describe: 'readonly',
-        it: 'readonly',
-        beforeEach: 'readonly',
-        afterEach: 'readonly'
+        ...globals.node,
+        ...globals.mocha
       }
     },
     rules: {

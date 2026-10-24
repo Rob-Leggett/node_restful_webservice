@@ -1,9 +1,9 @@
 # Node RESTful Web Service
 
 [![CI](https://github.com/Rob-Leggett/node_restful_webservice/actions/workflows/ci.yml/badge.svg)](https://github.com/Rob-Leggett/node_restful_webservice/actions/workflows/ci.yml)
-[![Node.js](https://img.shields.io/badge/node-%3E%3D20.0.0-brightgreen)](https://nodejs.org/)
+[![Node.js](https://img.shields.io/badge/node-%3E%3D24.0.0-brightgreen)](https://nodejs.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Express](https://img.shields.io/badge/Express-4.x-blue)](https://expressjs.com/)
+[![Express](https://img.shields.io/badge/Express-5.x-blue)](https://expressjs.com/)
 [![MongoDB](https://img.shields.io/badge/MongoDB-8.x-green)](https://www.mongodb.com/)
 
 A RESTful Node.js API built with Express, MongoDB, and JWT authentication.
@@ -19,7 +19,7 @@ A RESTful Node.js API built with Express, MongoDB, and JWT authentication.
 
 ## Requirements
 
-- Node.js >= 20.0.0
+- Node.js >= 24 (LTS; see `.nvmrc`)
 - MongoDB (local or remote)
 
 ## Installation
@@ -99,6 +99,7 @@ All customer endpoints require a valid JWT token in the `token` header or `Autho
 
 ```bash
 npm test
+npm run lint
 ```
 
 ## Project Structure

@@ -6,9 +6,9 @@ const router = Router();
 
 router.use(jwtVerifier);
 
-router.get('', customerController.getCustomers);
+router.get('/', customerController.getCustomers);
 router.get('/:id', customerController.getCustomer);
-router.post('', customerController.saveCustomer);
+router.post('/', customerController.saveCustomer);
 router.put('/:id', customerController.updateCustomer);
 router.delete('/:id', customerController.deleteCustomer);
 

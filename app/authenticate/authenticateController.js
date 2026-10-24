@@ -4,9 +4,11 @@ import * as queryUser from '../user/db/query/queryUser.js';
 
 export const authenticate = async (req, res) => {
   try {
-    const user = await queryUser.getByName(req.body.name);
+    // Express 5 leaves req.body undefined when no body was parsed
+    const { name, password } = req.body ?? {};
+    const user = await queryUser.getByName(name);
 
-    if (!user || user.password !== req.body.password) {
+    if (!user || user.password !== password) {
       return res.status(403).json({ error: 'Authentication failed.' });
     }
 
